@@ -1,6 +1,6 @@
-interface wsBaseClient {
+declare class wsBaseClient {
 
-  public ws: Websocket;
+  ws: WebSocket;
 
   constructor(construct: () => WebSocket);
   onMessage(m: any): void;
@@ -9,9 +9,8 @@ interface wsBaseClient {
   send(command: string, body: any, id: string | number): void;
 }
 
-type wsBaseAction = function(this: wsBaseClient, body, id): void;
 type wsBaseActions = {
-  [key: string]: wsBaseAction
+  [key: string]: (this: wsBaseClient, body: any, id: string | number) => void
 };
 
-export default function (actions: wsBaseActions): wsBaseClient;
+export default function (actions: wsBaseActions): typeof wsBaseClient;
