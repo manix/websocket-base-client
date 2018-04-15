@@ -6,7 +6,7 @@ declare class wsBaseClient {
   onMessage(m: any): void;
   onClose(): void;
   connect(): void;
-  send(command: string, body: any, id: string | number): void;
+  send(command: string, body?: any, id?: string | number): void;
 }
 
 type wsBaseActions = {
