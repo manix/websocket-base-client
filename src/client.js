@@ -18,17 +18,20 @@ module.exports = function (actions) {
 
   wsBaseClient.prototype.onClose = function () {
     if (this.reconnect) {
-      setTimeout(this.connect.bind(this), this.reconnect);
+      this.reconnectTO = setTimeout(this.connect.bind(this), this.reconnect);
     }
   };
 
   wsBaseClient.prototype.connect = function () {
-    this.ws = this.construct();
     /**
      * How many ms to wait before trying to reconnect. Set to 0 to disable.
      */
     this.reconnect = 30000;
+    if (this.reconnectTO) {
+      clearTimeout(this.reconnectTO);
+    }
 
+    this.ws = this.construct.call(this);
     this.ws.onmessage = this.onMessage.bind(this);
     this.ws.onclose = this.onClose.bind(this);
   };
