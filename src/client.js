@@ -39,7 +39,11 @@ module.exports = function (actions) {
     this.ws = this.construct.call(this);
     this.ws.onmessage = this.onMessage.bind(this);
     this.ws.onclose = this.onClose.bind(this);
-    this.ws.addEventListener("ping", this.onPing)
+    this.ws.addEventListener("ping", this.onPing.bind(this));
+
+    if (this.pingInterval > 0) {
+      this.onPing()
+    }
   };
 
   wsBaseClient.prototype.onPing = function () {
@@ -47,7 +51,7 @@ module.exports = function (actions) {
       clearTimeout(this.pingTO);
     }
 
-    this.pingTO = setTimeout(() => this.terminate(), this.pingInterval + this.pingInterval);
+    this.pingTO = setTimeout(() => this.ws.terminate(), this.pingInterval);
   }
 
   wsBaseClient.prototype.send = function (command, body, id) {

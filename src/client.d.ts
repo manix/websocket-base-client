@@ -1,6 +1,10 @@
 declare class wsBaseClient {
 
   ws: WebSocket;
+  reconnect: number;
+  reconnectTO: number;
+  pingInterval: number;
+  pingTO: number;
 
   constructor(construct: () => WebSocket);
   onMessage(m: any): void;
