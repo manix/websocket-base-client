@@ -31,10 +31,24 @@ module.exports = function (actions) {
       clearTimeout(this.reconnectTO);
     }
 
+    /**
+     * How many seconds to wait for ping from server
+     */
+    this.pingInterval = 30000;
+
     this.ws = this.construct.call(this);
     this.ws.onmessage = this.onMessage.bind(this);
     this.ws.onclose = this.onClose.bind(this);
+    this.ws.addEventListener("ping", this.onPing)
   };
+
+  wsBaseClient.prototype.onPing = function () {
+    if (this.pingTO) {
+      clearTimeout(this.pingTO);
+    }
+
+    this.pingTO = setTimeout(() => this.terminate(), this.pingInterval + this.pingInterval);
+  }
 
   wsBaseClient.prototype.send = function (command, body, id) {
     var data = [command];
