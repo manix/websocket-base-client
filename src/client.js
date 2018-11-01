@@ -34,7 +34,7 @@ module.exports = function (actions) {
     /**
      * How many seconds to wait for ping from server
      */
-    this.pingInterval = 30000;
+    this.pingInterval = 31000;
 
     this.ws = this.construct.call(this);
     this.ws.onmessage = this.onMessage.bind(this);
